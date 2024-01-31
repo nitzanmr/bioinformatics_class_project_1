@@ -20,21 +20,21 @@ gencode = {
 
 
 
-def is_valid_dna(seq : str) -> bool:
+def is_valid_dna(seq : str) -> bool: # Checks if a DNA sequence contains only A, T, C, G nucleotides
     seq = seq.lower()
     for i in seq:
         if i not in ['a', 't', 'c', 'g']:
             return False
     return True
 
-def get_gc_content(seq : str) -> int:
+def get_gc_content(seq : str) -> int: # Returns the GC content of a DNA sequence
     if is_valid_dna(seq) == False:
         return -1
     seq = seq.lower()
     number_of_gc = seq.count("g") + seq.count("c")
     return number_of_gc / seq.__len__() * 100
 
-def reverse_compliment(seq : str) -> str:
+def reverse_compliment(seq : str) -> str: # Returns the reverse compliment of a DNA sequence
     if is_valid_dna(seq) == False: # if seq is not a valid dna string returns empty string
         return ""
     seq = seq.upper()
@@ -50,12 +50,12 @@ def reverse_compliment(seq : str) -> str:
             returned_seq = f'C{returned_seq}'
     return returned_seq # return the reverse compliment of the sequence in caps.
 
-def change_t_to_u(seq : str) -> str:
+def change_t_to_u(seq : str) -> str: # Changes T to U in a DNA sequence
     seq = seq.upper()
     seq = seq.replace("T","U")
     return seq
 
-def get_transcription(seq : str, strand: int) -> str:
+def get_transcription(seq : str, strand: int) -> str: # Returns the transcription of a DNA sequence
     if strand == -1:
         seq = reverse_compliment(seq)
     return change_t_to_u(seq)
@@ -72,7 +72,7 @@ def stats_amino_acids() -> dict:
             
     return returned_dict
 
-def translate_seq(seq : str ,reading_frame : int = None ) -> list or str:
+def translate_seq(seq : str ,reading_frame : int = None ) -> list or str: # Returns the amino acid sequence of a DNA sequence
     seq = seq.upper()
     arrayed_seq = [seq[i:i+3] for i in range(0, len(seq), 3)]
     amino_acids = []
@@ -80,15 +80,21 @@ def translate_seq(seq : str ,reading_frame : int = None ) -> list or str:
     if is_valid_dna(seq) == False:
         return ""
     if reading_frame == None:
-        
-        for cur_seq in arrayed_seq:
-            print(cur_seq)
-            amino_acids.append(gencode[cur_seq])
+        for i in range(3):
+            # new_seq = seq[i:]
+            # print(new_seq)
+            amino_acids += translate_seq(seq, i + 1)
+
         return amino_acids
     else:
-        return gencode[arrayed_seq[reading_frame-1]]
+        new_seq = seq[reading_frame - 1:]
+        arrayed_seq = [new_seq[i:i+3] for i in range(0, len(new_seq), 3)]
+        for cur_seq in arrayed_seq:
+            if len(cur_seq) == 3:
+                amino_acids.append(gencode[cur_seq])
+        return amino_acids
 
-def count_codons(seq : str) -> dict:
+def count_codons(seq : str) -> dict: # Returns the count of codons in a DNA sequence
     seq = seq.upper()
     arrayed_seq = [seq[i:i+3] for i in range(0, len(seq), 3)]
     sumerized_dict = {}
