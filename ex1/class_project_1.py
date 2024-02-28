@@ -1,5 +1,8 @@
 from collections import Counter
 
+
+
+ 
 gencode = {
     'ATA':'I', 'ATC':'I', 'ATT':'I', 'ATG':'M',
     'ACA':'T', 'ACC':'T', 'ACG':'T', 'ACT':'T',
@@ -110,8 +113,8 @@ def count_codons(seq : str) -> dict: # Returns the count of codons in a DNA sequ
 print(stats_amino_acids()) # TODO send an email to check the stop by END if it is a "_" and that the question is not clear on what to do. 
 seq = "ACGTTG"
 seq = seq.lower()
-print(get_gc_content(seq))
-print(reverse_compliment(seq))
-print(get_transcription(seq, -1))
+# print(get_gc_content(seq))
+# print(reverse_compliment(seq))
+# print(get_transcription(seq, -1))
 print(translate_seq(seq))
-print(count_codons(seq))
+# print(count_codons(seq))
